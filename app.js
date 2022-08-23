@@ -1,70 +1,12 @@
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
-
-app.use("/listausuarios",(req,res,next)=>{
-    
-    res.status(200).send({
-        mensagem:"aqui é lista de usuários",
-        nome: "Maria Eduarda"
-    })
-
-});
-app.use("/listapatrimonio", (req,res,next)=>{
-
-    res.status(200).send({
-    mensagem:"aqui é lista de patrimonios!!!",
-    nome:"Maria Eduarda"
-    })
-
-});
-
-app.use("/somar",(req,res,next)=>{
-    let a = 2;
-    let b = 5;
-    let total = 0;
-    total = a + b;
-    console.log(total);
-    res.status(200).send({
-        resultado: total
-    })
-});
-     
-app.use("/resultado",(req,res,next)=>{
-    const a=8;
-    const b=5;
-    const c=8;
-    const d=10;
-    let media=0;
-    let situacao="";
-    let total=0;
-    total=a+b+c+d;
-    media=total/4;
-    if(media<7){
-       situacao="Reprovado";
-    }else{
-       situacao="Aprovado";
-    }
-    console.log(total);
-
-       res.status(200).send(
-
-          
-           
-           {
-               nome:"Maria Eduarda",
-               nota1:a,
-               nota2:b,
-               nota3:c,
-               nota4:d,
-               resltado:total,
-               media:media,
-               situacao:situacao
-
-
-           }
-       )
-
-});
+const rotaUsuarios = require('./routes/rotaUsuario');
+const bodyParser = require("body-parser");
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+app.use("/usuario",rotaUsuarios);
 
 app.use((req,res,next)=>{
     const erro = new Error("Não encontrado!");
@@ -81,7 +23,8 @@ app.use((error,req,res,next)=>{
         }
     })
 
-})
+});
+
 
 module.exports = app
 
